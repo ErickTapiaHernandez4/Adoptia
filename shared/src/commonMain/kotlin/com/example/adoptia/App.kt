@@ -33,6 +33,7 @@ fun App() {
                 loginViewModel.cerrarSesion()
                 sesion = null
             }
+            //Sesion actual
             when (sesionActual.rol) {
                 Rol.ADMINISTRADOR -> AdministradorScreen(sesionActual, cerrarSesion)
                 Rol.CLIENTE -> ClienteScreen(sesionActual, cerrarSesion)
