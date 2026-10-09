@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -46,6 +47,12 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
             implementation("io.ktor:ktor-client-okhttp:2.3.11")
+        }
+        jvmMain.dependencies {
+            implementation("io.ktor:ktor-client-okhttp:2.3.11")
+        }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:2.3.11")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)

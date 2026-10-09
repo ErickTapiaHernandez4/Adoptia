@@ -4,6 +4,7 @@ import com.example.adoptia.data.remote.ApiClient
 import com.example.adoptia.data.remote.AuthApiService
 import com.example.adoptia.domain.model.Rol
 import com.example.adoptia.domain.model.SesionUsuario
+import io.ktor.client.plugins.ClientRequestException
 
 sealed class ResultadoLogin {
     data class Exito(val sesion: SesionUsuario) : ResultadoLogin()
@@ -23,8 +24,12 @@ class AuthRepository(
                     nombre = respuesta.nombre
                 )
             )
+        } catch (e: ClientRequestException) {
+            // El servidor respondió 401: usuario o contraseña no están en usuarios.json
+            ResultadoLogin.Error("Usuario o contraseña incorrectos")
         } catch (e: Exception) {
-            ResultadoLogin.Error("Usuario o contraseña incorrectos, o el servidor no está disponible.")
+            // No hubo respuesta: el backend está apagado o no se alcanza
+            ResultadoLogin.Error("No se pudo conectar con el servidor")
         }
     }
 }
