@@ -47,6 +47,10 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
             implementation("io.ktor:ktor-client-okhttp:2.3.11")
+
+            // Sensor biométrico: huella digital y reconocimiento de rostro
+            api("androidx.biometric:biometric:1.1.0")
+            api("androidx.fragment:fragment-ktx:1.8.5")
         }
         jvmMain.dependencies {
             implementation("io.ktor:ktor-client-okhttp:2.3.11")
