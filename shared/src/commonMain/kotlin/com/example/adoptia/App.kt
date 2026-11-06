@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.adoptia.domain.model.Rol
 import com.example.adoptia.domain.model.SesionUsuario
+import com.example.adoptia.sensor.AccelerometerScreen
 import com.example.adoptia.ui.screens.AdministradorScreen
 import com.example.adoptia.ui.screens.ClienteScreen
 import com.example.adoptia.ui.screens.LoginScreen
@@ -20,10 +21,13 @@ import com.example.adoptia.ui.viewmodel.LoginViewModel
 fun App() {
     MaterialTheme {
         var sesion by remember { mutableStateOf<SesionUsuario?>(null) }
+        var showSensor by remember { mutableStateOf(false) }
         val loginViewModel = remember { LoginViewModel() }
         val sesionActual = sesion
 
-        if (sesionActual == null) {
+        if (showSensor) {
+            AccelerometerScreen(onBack = { showSensor = false })
+        } else if (sesionActual == null) {
             LoginScreen(
                 viewModel = loginViewModel,
                 onLoginExitoso = { nuevaSesion -> sesion = nuevaSesion }
@@ -33,11 +37,10 @@ fun App() {
                 loginViewModel.cerrarSesion()
                 sesion = null
             }
-            //Sesion actual
             when (sesionActual.rol) {
-                Rol.ADMINISTRADOR -> AdministradorScreen(sesionActual, cerrarSesion)
-                Rol.CLIENTE -> ClienteScreen(sesionActual, cerrarSesion)
-                Rol.REFUGIO -> RefugioScreen(sesionActual, cerrarSesion)
+                Rol.ADMINISTRADOR -> AdministradorScreen(sesionActual, cerrarSesion, onOpenSensor = { showSensor = true })
+                Rol.CLIENTE -> ClienteScreen(sesionActual, cerrarSesion, onOpenSensor = { showSensor = true })
+                Rol.REFUGIO -> RefugioScreen(sesionActual, cerrarSesion, onOpenSensor = { showSensor = true })
             }
         }
     }
