@@ -29,14 +29,11 @@ import com.example.adoptia.domain.model.SesionUsuario
 import com.example.adoptia.ui.viewmodel.MascotaViewModel
 import com.example.adoptia.ui.viewmodel.MascotasUiState
 
-// Tres vistas sencillas, una por rol. Los datos salen de MySQL a través del
-// backend (MascotaViewModel -> MascotaRepository -> MascotaApiService).
-
 @Composable
-fun AdministradorScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit) {
+fun AdministradorScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit, onOpenSensor: () -> Unit) {
     val vm = remember { MascotaViewModel() }
 
-    PlantillaRol("Panel de Administrador", sesion, vm, onCerrarSesion) { estado ->
+    PlantillaRol("Panel de Administrador", sesion, vm, onCerrarSesion, onOpenSensor) { estado ->
         Text("Mascotas registradas: ${estado.mascotas.size}")
         Text("Solicitudes: ${estado.solicitudes.size}")
         Spacer(modifier = Modifier.height(12.dp))
@@ -60,10 +57,10 @@ fun AdministradorScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit) {
 }
 
 @Composable
-fun ClienteScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit) {
+fun ClienteScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit, onOpenSensor: () -> Unit) {
     val vm = remember { MascotaViewModel() }
 
-    PlantillaRol("Adoptar una mascota", sesion, vm, onCerrarSesion) { estado ->
+    PlantillaRol("Adoptar una mascota", sesion, vm, onCerrarSesion, onOpenSensor) { estado ->
         Text("Mascotas disponibles", style = MaterialTheme.typography.titleMedium)
         if (estado.mascotas.isEmpty()) {
             Text("No hay mascotas")
@@ -95,13 +92,13 @@ fun ClienteScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit) {
 }
 
 @Composable
-fun RefugioScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit) {
+fun RefugioScreen(sesion: SesionUsuario, onCerrarSesion: () -> Unit, onOpenSensor: () -> Unit) {
     val vm = remember { MascotaViewModel() }
     var nombre by remember { mutableStateOf("") }
     var tipo by remember { mutableStateOf("") }
     var edad by remember { mutableStateOf("") }
 
-    PlantillaRol("Panel de Refugio", sesion, vm, onCerrarSesion) { estado ->
+    PlantillaRol("Panel de Refugio", sesion, vm, onCerrarSesion, onOpenSensor) { estado ->
         Text("Registrar mascota", style = MaterialTheme.typography.titleMedium)
         OutlinedTextField(
             value = nombre,
@@ -167,11 +164,11 @@ private fun PlantillaRol(
     sesion: SesionUsuario,
     vm: MascotaViewModel,
     onCerrarSesion: () -> Unit,
+    onOpenSensor: () -> Unit,
     contenido: @Composable (MascotasUiState) -> Unit
 ) {
     val estado by vm.estado.collectAsState()
 
-    // Al abrir la pantalla se piden los datos a la base de datos.
     LaunchedEffect(Unit) { vm.cargar() }
 
     Scaffold(
@@ -192,6 +189,10 @@ private fun PlantillaRol(
                 Text(text = mensaje, color = MaterialTheme.colorScheme.primary)
             }
 
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(onClick = onOpenSensor) {
+                Text("Ver Sensor Acelerómetro")
+            }
             Spacer(modifier = Modifier.height(12.dp))
             contenido(estado)
             Spacer(modifier = Modifier.height(24.dp))

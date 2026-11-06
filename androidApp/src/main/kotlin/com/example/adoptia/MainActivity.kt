@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
 import com.example.adoptia.sensor.ActividadBiometria
+import com.example.adoptia.domain.sensor.appContext as contextoDomainSensor
+import com.example.adoptia.sensor.appContext as contextoSensor
 
 // FragmentActivity (en vez de ComponentActivity) porque BiometricPrompt la necesita.
 class MainActivity : FragmentActivity() {
@@ -14,6 +16,11 @@ class MainActivity : FragmentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        // Contexto para el sensor acelerómetro (hay dos versiones en el proyecto).
+        contextoDomainSensor = applicationContext
+        contextoSensor = applicationContext
+
+        // Actividad para el sensor biométrico (huella o rostro).
         ActividadBiometria.actividad = this
 
         setContent {
