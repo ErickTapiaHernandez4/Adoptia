@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,8 +20,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.adoptia.domain.model.SesionUsuario
+import com.example.adoptia.sensor.biometriaDisponible
 import com.example.adoptia.ui.viewmodel.LoginViewModel
 
 @Composable
@@ -31,6 +34,9 @@ fun LoginScreen(
     var usuario by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val estado by viewModel.estado.collectAsState()
+
+    // Revisa si el celular tiene huella o rostro registrado.
+    val hayBiometria = remember { biometriaDisponible() }
 
     estado.sesion?.let { sesion ->
         onLoginExitoso(sesion)
@@ -61,6 +67,7 @@ fun LoginScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
         )
 
@@ -82,6 +89,22 @@ fun LoginScreen(
             } else {
                 Text("Entrar")
             }
+        }
+
+        if (hayBiometria) {
+            OutlinedButton(
+                onClick = { viewModel.loginConBiometria() },
+                enabled = !estado.cargando,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            ) {
+                Text("Entrar con huella o rostro")
+            }
+        } else {
+            Text(
+                text = "Registra una huella o tu rostro en el celular para entrar sin contraseña",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 12.dp)
+            )
         }
     }
 }
