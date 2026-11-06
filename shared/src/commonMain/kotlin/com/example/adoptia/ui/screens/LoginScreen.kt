@@ -50,7 +50,7 @@ fun LoginScreen(
     ) {
         Text(text = "Adoptia", style = MaterialTheme.typography.headlineMedium)
         Text(
-            text = "Inicia sesión con tu usuario y contraseña",
+            text = "Inicia sesión con tu usuario y contraseña, Prueba de Despliegue",
             style = MaterialTheme.typography.bodyMedium
         )
 
