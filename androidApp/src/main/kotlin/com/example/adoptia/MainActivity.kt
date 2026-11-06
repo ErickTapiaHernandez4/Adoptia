@@ -15,6 +15,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        //Prueba examen).
 
         // Contexto para el sensor acelerómetro (hay dos versiones en el proyecto).
         contextoDomainSensor = applicationContext
