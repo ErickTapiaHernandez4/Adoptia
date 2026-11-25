@@ -1,6 +1,5 @@
 package com.example.adoptia
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,12 +13,13 @@ import com.example.adoptia.ui.screens.AdministradorScreen
 import com.example.adoptia.ui.screens.ClienteScreen
 import com.example.adoptia.ui.screens.LoginScreen
 import com.example.adoptia.ui.screens.RefugioScreen
+import com.example.adoptia.ui.theme.AdoptiaTema
 import com.example.adoptia.ui.viewmodel.LoginViewModel
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    AdoptiaTema {
         var sesion by remember { mutableStateOf<SesionUsuario?>(null) }
         var showSensor by remember { mutableStateOf(false) }
         val loginViewModel = remember { LoginViewModel() }
