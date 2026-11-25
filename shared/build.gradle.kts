@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -20,6 +21,12 @@ kotlin {
     }
 
     jvm()
+
+    // Web con WebAssembly (Wasm): la usa el módulo webApp
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
 
     android {
         namespace = "com.example.adoptia.shared"
@@ -46,17 +53,21 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
-            implementation("io.ktor:ktor-client-okhttp:2.3.11")
+            implementation("io.ktor:ktor-client-okhttp:3.2.3")
 
             // Sensor biométrico: huella digital y reconocimiento de rostro
             api("androidx.biometric:biometric:1.1.0")
             api("androidx.fragment:fragment-ktx:1.8.5")
         }
         jvmMain.dependencies {
-            implementation("io.ktor:ktor-client-okhttp:2.3.11")
+            implementation("io.ktor:ktor-client-okhttp:3.2.3")
+        }
+        wasmJsMain.dependencies {
+            // Motor de Ktor para el navegador (usa fetch)
+            implementation("io.ktor:ktor-client-js:3.2.3")
         }
         iosMain.dependencies {
-            implementation("io.ktor:ktor-client-darwin:2.3.11")
+            implementation("io.ktor:ktor-client-darwin:3.2.3")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -68,9 +79,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation("io.ktor:ktor-client-core:2.3.11")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.11")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
+            implementation("io.ktor:ktor-client-core:3.2.3")
+            implementation("io.ktor:ktor-client-content-negotiation:3.2.3")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
         }
         commonTest.dependencies {

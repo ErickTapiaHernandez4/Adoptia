@@ -27,7 +27,7 @@ class AuthRepository(
         } catch (e: ClientRequestException) {
             // El servidor respondió 401: usuario o contraseña no están en usuarios.json
             ResultadoLogin.Error("Usuario o contraseña incorrectos")
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             // No hubo respuesta: el backend está apagado o no se alcanza
             ResultadoLogin.Error("No se pudo conectar con el servidor")
         }
