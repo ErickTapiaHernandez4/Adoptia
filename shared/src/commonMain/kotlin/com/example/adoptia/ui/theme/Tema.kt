@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ---------- Colores de Adoptia: naranja cálido + verde azulado ----------
-val Naranja = Color(0xFFFF4747)
+val Naranja = Color(0xFFEEE8E8)
 val NaranjaClaro = Color(0xFF00BCB4)
-val VerdeAzulado = Color(0xFF2A8C82)
+val VerdeAzulado = Color(0xFF66C637)
 val VerdeAzuladoClaro = Color(0xFFFFB547)
-val Crema = Color(0xFFC4E86B)
+val Crema = Color(0xFF2A8C82)
 val CafeOscuro = Color(0xFF231A15)
 
 // Colores para el estado de las solicitudes
